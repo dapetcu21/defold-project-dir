@@ -1,0 +1,5 @@
+function init(self)
+	print(defoldprojectdir.get_project_directory())
+  print(defoldprojectdir.get_executable_path())
+	print(defoldprojectdir.PATH_SEP)
+end
