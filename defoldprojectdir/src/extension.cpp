@@ -74,8 +74,8 @@ static int GetExecutablePath(lua_State* L) {
 
 #if defined(DM_PLATFORM_OSX) || defined(DM_PLATFORM_WINDOWS) || defined(DM_PLATFORM_LINUX)
 
-#ifdef _WIN32
-static char * dirname(char * path) {
+// Mutates path in-place and doesn't do any allocations
+static char * portableDirname(char * path) {
     size_t i = strlen(path);
     do {
         i -= 1;
@@ -86,7 +86,6 @@ static char * dirname(char * path) {
     } while (i);
     return path;
 }
-#endif
 
 static bool endsIn(const char * haystack, const char * needle) {
     size_t needleLen = strlen(needle);
@@ -126,7 +125,7 @@ static char * getProjectDir() {
     #else
     if (endsIn(exePath, FMB_EDITOR_SUFFIX)) {
     #endif
-        char* projPath = (char*)dirname(dirname(dirname(exePath)));
+        char* projPath = (char*)portableDirname(portableDirname(portableDirname(exePath)));
         return projPath;
     }
     #endif
